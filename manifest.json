@@ -34,5 +34,9 @@
   "background": {
     "scripts": ["background.js"],
     "persistent": false
+  },
+  "data_collection_permissions": {
+    "required": [],
+    "optional": []
   }
 }

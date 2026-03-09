@@ -1,11 +1,13 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "YouTube Subtitle Styler",
   "version": "1.1.0",
   "description": "Force your preferred style settings on YouTube subtitles, overriding YouTube's attempts to reset them.",
   "permissions": [
     "storage",
-    "tabs",
+    "tabs"
+  ],
+  "host_permissions": [
     "*://*.youtube.com/*"
   ],
   "icons": {
@@ -21,7 +23,7 @@
       "run_at": "document_idle"
     }
   ],
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_title": "YouTube Subtitle Styler",
     "default_icon": {
@@ -32,8 +34,7 @@
     }
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
   "browser_specific_settings": {
     "gecko": {

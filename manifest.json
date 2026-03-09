@@ -35,8 +35,14 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "data_collection_permissions": {
-    "required": [],
-    "optional": []
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "youtube-subtitle-styler@extension",
+      "strict_min_version": "58.0",
+      "data_collection_permissions": {
+        "required": [],
+        "optional": []
+      }
+    }
   }
 }

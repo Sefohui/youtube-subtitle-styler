@@ -8,11 +8,10 @@ MESSAGE="${1:-Update extension}"
 
 # Read version from manifest.json
 VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": *"\(.*\)".*/\1/')
-DIST_DIR="releases/v${VERSION}"
-ZIP_FILE="${DIST_DIR}/youtube-subtitle-styler-v${VERSION}.zip"
+ZIP_FILE="releases/youtube-subtitle-styler-v${VERSION}.zip"
 
 echo "Building v${VERSION}..."
-mkdir -p "$DIST_DIR"
+mkdir -p releases
 
 zip -r "$ZIP_FILE" \
   manifest.json \

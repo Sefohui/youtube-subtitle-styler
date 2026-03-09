@@ -3,12 +3,16 @@
  * Injects and enforces custom styles on YouTube subtitle elements.
  */
 
+// Chrome/Firefox compatibility polyfill
+if (typeof browser === "undefined") var browser = chrome;
+
 const STYLE_ID = "yt-subtitle-styler-styles";
 
 const DEFAULTS = {
   fontSize: 20,
   fontFamily: "Arial",
   color: "#ffffff",
+  fontOpacity: 100,
   bgColor: "#000000",
   bgOpacity: 75,
   bold: false,
@@ -29,7 +33,9 @@ function hexToRgb(hex) {
 function buildCSS(s) {
   if (!s.enabled) return "";
 
-  const { r, g, b } = hexToRgb(s.bgColor);
+  const fg = hexToRgb(s.color);
+  const bg = hexToRgb(s.bgColor);
+  const fgAlpha = s.fontOpacity / 100;
   const bgAlpha = s.bgOpacity / 100;
   const textShadow = s.shadow
     ? "text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000 !important;"
@@ -42,8 +48,8 @@ function buildCSS(s) {
     span.ytp-caption-segment {
       font-size: ${s.fontSize}px !important;
       font-family: ${s.fontFamily}, sans-serif !important;
-      color: ${s.color} !important;
-      background-color: rgba(${r}, ${g}, ${b}, ${bgAlpha}) !important;
+      color: rgba(${fg.r}, ${fg.g}, ${fg.b}, ${fgAlpha}) !important;
+      background-color: rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bgAlpha}) !important;
       font-weight: ${s.bold ? "bold" : "normal"} !important;
       font-style: ${s.italic ? "italic" : "normal"} !important;
       line-height: 1.4 !important;

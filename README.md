@@ -14,13 +14,13 @@ A Firefox extension that lets you set your preferred subtitle style on YouTube a
 
 ## Installation
 
-### Firefox Add-ons (recommended)
+### Firefox (recommended)
 
 Install directly from the Firefox Add-ons store:
 
 👉 **[Add to Firefox](https://addons.mozilla.org/firefox/addon/youtube-subtitle-styler/)**
 
-### Manual installation
+Alternatively, install manually:
 
 1. Go to the [latest release](https://github.com/Sefohui/youtube-subtitle-styler/releases/latest) on GitHub
 2. Download `youtube-subtitle-styler-v*.zip`
@@ -29,6 +29,17 @@ Install directly from the Firefox Add-ons store:
 5. Select the downloaded `.zip` file
 
 > **Note:** Manual installation requires Firefox Nightly or Developer Edition with `xpinstall.signatures.required` set to `false` in `about:config`.
+
+### Chrome
+
+1. Go to the [latest release](https://github.com/Sefohui/youtube-subtitle-styler/releases/latest) on GitHub
+2. Download and unzip `youtube-subtitle-styler-v*.zip` to a folder on your computer
+3. Open Chrome and go to `chrome://extensions`
+4. Enable **Developer mode** (toggle in the top right corner)
+5. Click **Load unpacked**
+6. Select the unzipped folder
+
+The extension will now appear in your toolbar.
 
 ## Usage
 

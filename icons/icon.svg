@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Red background -->
+  <rect width="128" height="128" rx="22" fill="#ff0000"/>
+  <!-- White CC box (mimics YouTube's caption icon) -->
+  <rect x="12" y="36" width="104" height="56" rx="10" fill="white"/>
+  <!-- CC text in red -->
+  <text
+    x="64" y="77"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="36"
+    font-weight="700"
+    text-anchor="middle"
+    fill="#ff0000"
+    letter-spacing="2"
+  >CC</text>
+</svg>

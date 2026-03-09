@@ -3,6 +3,9 @@
  * Forwards settings changes to all active YouTube tabs.
  */
 
+// Chrome/Firefox compatibility polyfill
+if (typeof browser === "undefined") var browser = chrome;
+
 browser.storage.onChanged.addListener((changes, area) => {
   if (area !== "local" || !changes.settings) return;
 

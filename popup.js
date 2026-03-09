@@ -2,10 +2,14 @@
  * YT Subtitle Styler — popup script
  */
 
+// Chrome/Firefox compatibility polyfill
+if (typeof browser === "undefined") var browser = chrome;
+
 const DEFAULTS = {
   fontSize: 20,
   fontFamily: "Arial",
   color: "#ffffff",
+  fontOpacity: 100,
   bgColor: "#000000",
   bgOpacity: 75,
   bold: false,
@@ -59,12 +63,14 @@ function buildSwatches(containerId, currentHex, onChange) {
 
 function updatePreview(s) {
   const preview = get("preview-text");
-  const { r, g, b } = hexToRgb(s.bgColor);
+  const fg = hexToRgb(s.color);
+  const bg = hexToRgb(s.bgColor);
+  const fgAlpha = s.fontOpacity / 100;
   const bgAlpha = s.bgOpacity / 100;
   preview.style.fontSize = s.fontSize + "px";
   preview.style.fontFamily = s.fontFamily + ", sans-serif";
-  preview.style.color = s.color;
-  preview.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${bgAlpha})`;
+  preview.style.color = `rgba(${fg.r}, ${fg.g}, ${fg.b}, ${fgAlpha})`;
+  preview.style.backgroundColor = `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bgAlpha})`;
   preview.style.fontWeight = s.bold ? "bold" : "normal";
   preview.style.fontStyle = s.italic ? "italic" : "normal";
   preview.style.textShadow = s.shadow
@@ -79,6 +85,7 @@ function readForm() {
     fontSize: parseInt(get("fontSize").value),
     fontFamily: get("fontFamily").value,
     color: selectedColor,
+    fontOpacity: parseInt(get("fontOpacity").value),
     bgColor: selectedBgColor,
     bgOpacity: parseInt(get("bgOpacity").value),
     bold: get("bold").checked,
@@ -94,6 +101,8 @@ function populateForm(s) {
   get("fontSize").value = s.fontSize;
   get("fontSizeVal").textContent = s.fontSize;
   get("fontFamily").value = s.fontFamily;
+  get("fontOpacity").value = s.fontOpacity;
+  get("fontOpacityVal").textContent = s.fontOpacity;
   get("bgOpacity").value = s.bgOpacity;
   get("bgOpacityVal").textContent = s.bgOpacity;
   get("bold").checked = s.bold;
@@ -107,11 +116,12 @@ function populateForm(s) {
 function onInput() {
   const s = readForm();
   get("fontSizeVal").textContent = s.fontSize;
+  get("fontOpacityVal").textContent = s.fontOpacity;
   get("bgOpacityVal").textContent = s.bgOpacity;
   updatePreview(s);
 }
 
-["fontSize", "bgOpacity"].forEach(id => get(id).addEventListener("input", onInput));
+["fontSize", "fontOpacity", "bgOpacity"].forEach(id => get(id).addEventListener("input", onInput));
 ["fontFamily"].forEach(id => get(id).addEventListener("change", onInput));
 ["enabled", "bold", "italic", "shadow"].forEach(id => get(id).addEventListener("change", onInput));
 

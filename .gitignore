@@ -2,3 +2,4 @@ releases/
 deploy.sh
 icons/icon-*.png
 .DS_Store
+.amo-upload-uuid

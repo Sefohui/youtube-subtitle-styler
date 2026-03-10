@@ -163,6 +163,49 @@ get("saveBtn").addEventListener("click", () => {
   });
 });
 
+// Export settings as a JSON file
+get("exportBtn").addEventListener("click", () => {
+  const settings = readForm();
+  const blob = new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "yt-subtitle-styler-settings.json";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Import settings from a JSON file
+get("importBtn").addEventListener("click", () => get("importFile").click());
+
+get("importFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      const merged = { ...DEFAULTS, ...imported };
+      populateForm(merged);
+      browser.storage.local.set({ settings: merged }).then(() => {
+        const status = get("status");
+        status.textContent = "Settings imported!";
+        status.className = "status saved";
+        setTimeout(() => {
+          status.textContent = "";
+          status.className = "status";
+        }, 1500);
+      });
+    } catch {
+      const status = get("status");
+      status.textContent = "Invalid file.";
+      status.className = "status";
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
 // Render defaults immediately, then overwrite with stored settings
 populateForm(DEFAULTS);
 

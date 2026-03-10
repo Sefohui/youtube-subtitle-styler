@@ -244,6 +244,27 @@
     .save-btn:hover { background: #e02020; }
     .save-btn:active { background: #c01a1a; }
 
+    .io-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .io-btn {
+      flex: 1;
+      padding: 7px;
+      background: #2a2a2a;
+      color: #aaa;
+      border: 1px solid #383838;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .io-btn:hover { background: #333; color: #ddd; }
+
     .status {
       text-align: center;
       font-size: 11px;
@@ -375,6 +396,11 @@
     </div>
 
     <button class="save-btn" id="saveBtn">Save settings</button>
+    <div class="io-row">
+      <button class="io-btn" id="exportBtn">Export settings</button>
+      <button class="io-btn" id="importBtn">Import settings</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" />
+    </div>
     <div class="status" id="status"></div>
 
   </div>

@@ -1,232 +1,40 @@
 /**
  * YT Subtitle Styler — popup script
+ * Minimal popup: just the enable toggle and a link to the full settings page.
  */
 
 // Chrome/Firefox compatibility polyfill
 if (typeof browser === "undefined") var browser = chrome;
 
-const DEFAULTS = {
-  fontSize: 20,
-  fontFamily: "Arial",
-  color: "#ffffff",
-  fontOpacity: 100,
-  bgColor: "#000000",
-  bgOpacity: 75,
-  bold: false,
-  italic: false,
-  shadow: true,
-  enabled: true,
-};
-
-// The same colors YouTube offers in its subtitle settings
-const YT_COLORS = [
-  { hex: "#ffffff", name: "White" },
-  { hex: "#ffff00", name: "Yellow" },
-  { hex: "#00ff00", name: "Green" },
-  { hex: "#00ffff", name: "Cyan" },
-  { hex: "#0000ff", name: "Blue" },
-  { hex: "#ff00ff", name: "Magenta" },
-  { hex: "#ff0000", name: "Red" },
-  { hex: "#000000", name: "Black" },
-];
-
-let selectedColor = DEFAULTS.color;
-let selectedBgColor = DEFAULTS.bgColor;
-
 function get(id) { return document.getElementById(id); }
 
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return { r, g, b };
-}
-
-function buildSwatches(containerId, currentHex, onChange) {
-  const container = get(containerId);
-  container.innerHTML = "";
-  for (const c of YT_COLORS) {
-    const swatch = document.createElement("div");
-    swatch.className = "swatch" + (c.hex === currentHex ? " selected" : "");
-    swatch.style.backgroundColor = c.hex;
-    swatch.title = c.name;
-    if (c.hex === "#000000") swatch.style.outline = "1px solid #444";
-    swatch.addEventListener("click", () => {
-      container.querySelectorAll(".swatch").forEach(s => s.classList.remove("selected"));
-      swatch.classList.add("selected");
-      onChange(c.hex);
-      onInput();
-    });
-    container.appendChild(swatch);
-  }
-}
-
-function updatePreview(s) {
-  const preview = get("preview-text");
-  const fg = hexToRgb(s.color);
-  const bg = hexToRgb(s.bgColor);
-  const fgAlpha = s.fontOpacity / 100;
-  const bgAlpha = s.bgOpacity / 100;
-  preview.style.fontSize = s.fontSize + "px";
-  preview.style.fontFamily = s.fontFamily + ", sans-serif";
-  preview.style.color = `rgba(${fg.r}, ${fg.g}, ${fg.b}, ${fgAlpha})`;
-  preview.style.backgroundColor = `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bgAlpha})`;
-  preview.style.fontWeight = s.bold ? "bold" : "normal";
-  preview.style.fontStyle = s.italic ? "italic" : "normal";
-  preview.style.textShadow = s.shadow
-    ? "1px 1px 2px #000, -1px -1px 2px #000"
-    : "none";
-  preview.style.opacity = s.enabled ? "1" : "0.4";
-}
-
-function readForm() {
-  return {
-    enabled: get("enabled").checked,
-    fontSize: parseInt(get("fontSize").value),
-    fontFamily: get("fontFamily").value,
-    color: selectedColor,
-    fontOpacity: parseInt(get("fontOpacity").value),
-    bgColor: selectedBgColor,
-    bgOpacity: parseInt(get("bgOpacity").value),
-    bold: get("bold").checked,
-    italic: get("italic").checked,
-    shadow: get("shadow").checked,
-  };
-}
-
-function populateForm(s) {
-  selectedColor = s.color;
-  selectedBgColor = s.bgColor;
-  get("enabled").checked = s.enabled;
-  get("fontSize").value = s.fontSize;
-  get("fontSizeVal").textContent = s.fontSize;
-  get("fontFamily").value = s.fontFamily;
-  get("fontOpacity").value = s.fontOpacity;
-  get("fontOpacityVal").textContent = s.fontOpacity;
-  get("bgOpacity").value = s.bgOpacity;
-  get("bgOpacityVal").textContent = s.bgOpacity;
-  get("bold").checked = s.bold;
-  get("italic").checked = s.italic;
-  get("shadow").checked = s.shadow;
-  buildSwatches("colorSwatches", s.color, (hex) => { selectedColor = hex; });
-  buildSwatches("bgColorSwatches", s.bgColor, (hex) => { selectedBgColor = hex; });
-  updatePreview(s);
-}
-
-function onInput() {
-  const s = readForm();
-  get("fontSizeVal").textContent = s.fontSize;
-  get("fontOpacityVal").textContent = s.fontOpacity;
-  get("bgOpacityVal").textContent = s.bgOpacity;
-  updatePreview(s);
-}
-
-["fontSize", "fontOpacity", "bgOpacity"].forEach(id => get(id).addEventListener("input", onInput));
-["fontFamily"].forEach(id => get(id).addEventListener("change", onInput));
-["enabled", "bold", "italic", "shadow"].forEach(id => get(id).addEventListener("change", onInput));
-
-get("saveBtn").addEventListener("click", () => {
-  const settings = readForm();
-
-  browser.storage.local.set({ settings }).then(() => {
-    // Send directly to the active YouTube tab for immediate effect
-    browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-      if (tabs[0]) {
-        browser.tabs.sendMessage(tabs[0].id, {
-          type: "settingsUpdated",
-          settings,
-        }).catch(() => {});
-      }
-    });
-
-    // Also notify all other open YouTube tabs
-    browser.tabs.query({ url: "*://*.youtube.com/*" }).then((tabs) => {
-      for (const tab of tabs) {
-        browser.tabs.sendMessage(tab.id, {
-          type: "settingsUpdated",
-          settings,
-        }).catch(() => {});
-      }
-    });
-
-    const status = get("status");
-    status.textContent = "Saved!";
-    status.className = "status saved";
-    setTimeout(() => {
-      status.textContent = "";
-      status.className = "status";
-    }, 1500);
-  }).catch((err) => {
-    const status = get("status");
-    status.textContent = "Error: " + err.message;
-    status.className = "status";
-  });
-});
-
-// Export settings as a JSON file
-get("exportBtn").addEventListener("click", () => {
-  const settings = readForm();
-  const blob = new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "yt-subtitle-styler-settings.json";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// Import settings from a JSON file
-get("importBtn").addEventListener("click", () => get("importFile").click());
-
-get("importFile").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      const merged = { ...DEFAULTS, ...imported };
-      populateForm(merged);
-      browser.storage.local.set({ settings: merged }).then(() => {
-        browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-          if (tabs[0]) {
-            browser.tabs.sendMessage(tabs[0].id, {
-              type: "settingsUpdated",
-              settings: merged,
-            }).catch(() => {});
-          }
-        });
-
-        browser.tabs.query({ url: "*://*.youtube.com/*" }).then((tabs) => {
-          for (const tab of tabs) {
-            browser.tabs.sendMessage(tab.id, {
-              type: "settingsUpdated",
-              settings: merged,
-            }).catch(() => {});
-          }
-        });
-
-        const status = get("status");
-        status.textContent = "Settings imported!";
-        status.className = "status saved";
-        setTimeout(() => {
-          status.textContent = "";
-          status.className = "status";
-        }, 1500);
+function applyEnabled(enabled) {
+  browser.storage.local.get("settings").then((result) => {
+    const settings = { ...result.settings, enabled };
+    browser.storage.local.set({ settings }).then(() => {
+      browser.tabs.query({ url: "*://*.youtube.com/*" }).then((tabs) => {
+        for (const tab of tabs) {
+          browser.tabs.sendMessage(tab.id, {
+            type: "settingsUpdated",
+            settings,
+          }).catch(() => {});
+        }
       });
-    } catch {
-      const status = get("status");
-      status.textContent = "Invalid file.";
-      status.className = "status";
-    }
-  };
-  reader.readAsText(file);
-  e.target.value = "";
+    });
+  });
+}
+
+// Load current enabled state
+browser.storage.local.get("settings").then((result) => {
+  get("enabled").checked = result.settings?.enabled ?? true;
+}).catch(() => {});
+
+// Toggle enabled instantly without opening settings
+get("enabled").addEventListener("change", () => {
+  applyEnabled(get("enabled").checked);
 });
 
-// Render defaults immediately, then overwrite with stored settings
-populateForm(DEFAULTS);
-
-browser.storage.local.get("settings").then((result) => {
-  if (result.settings) populateForm(result.settings);
-}).catch(() => {});
+// Open the full settings page in a new tab
+get("openSettings").addEventListener("click", () => {
+  browser.runtime.openOptionsPage();
+});

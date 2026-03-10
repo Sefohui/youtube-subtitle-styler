@@ -12,6 +12,7 @@ A browser extension for Firefox and Chrome that lets you set your preferred subt
 - **Background color & opacity** — pick a color and control transparency
 - **Enable/disable** — toggle all custom styles on or off with one click
 - **Persistent** — styles survive page reloads and YouTube's preference resets
+- **Export & import settings** — save your settings to a file and import them on another device
 
 ## Installation
 

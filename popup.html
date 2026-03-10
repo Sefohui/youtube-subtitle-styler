@@ -11,15 +11,16 @@
       font-size: 13px;
       background: #141414;
       color: #d0d0d0;
-      width: 310px;
+      width: 220px;
+      padding: 12px;
     }
 
-    /* ── Header ── */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 14px 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #2a2a2a;
     }
 
@@ -30,10 +31,10 @@
     }
 
     .logo {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       background: #ff0000;
-      border-radius: 4px;
+      border-radius: 3px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -43,138 +44,33 @@
     .logo::after {
       content: "";
       border-style: solid;
-      border-width: 5px 0 5px 9px;
+      border-width: 4px 0 4px 8px;
       border-color: transparent transparent transparent #fff;
       margin-left: 2px;
     }
 
     .header h1 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: #fff;
-      letter-spacing: 0.2px;
     }
 
-    /* Enable toggle in header */
-    .header-toggle {
+    .toggle-row {
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-size: 11px;
-      color: #888;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
 
-    /* ── Body ── */
-    .body {
-      padding: 12px 14px 14px;
+    .toggle-label {
+      color: #bbb;
+      font-size: 13px;
     }
 
-    /* ── Section ── */
-    .section {
-      margin-bottom: 14px;
-    }
-
-    .section-label {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
-    .card {
-      background: #1e1e1e;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    /* ── Rows inside card ── */
-    .field {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-bottom: 1px solid #252525;
-    }
-
-    .field:last-child {
-      border-bottom: none;
-    }
-
-    .field-label {
-      color: #aaa;
-      flex: 1;
-      font-size: 12.5px;
-    }
-
-    .field-control {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* ── Range slider ── */
-    input[type="range"] {
-      width: 110px;
-      accent-color: #ff3333;
-      cursor: pointer;
-    }
-
-    .range-val {
-      font-size: 11px;
-      color: #666;
-      min-width: 34px;
-      text-align: right;
-    }
-
-    /* ── Select ── */
-    select {
-      background: #2a2a2a;
-      color: #ddd;
-      border: 1px solid #383838;
-      border-radius: 5px;
-      padding: 4px 8px;
-      font-size: 12px;
-      cursor: pointer;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: #ff3333;
-    }
-
-    /* ── Color swatches ── */
-    .swatches {
-      display: flex;
-      gap: 6px;
-    }
-
-    .swatch {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.1s, border-color 0.1s;
-      flex-shrink: 0;
-    }
-
-    .swatch:hover {
-      transform: scale(1.2);
-    }
-
-    .swatch.selected {
-      border-color: #fff;
-      transform: scale(1.1);
-    }
-
-    /* ── Toggle switch ── */
     .switch {
       position: relative;
       width: 34px;
       height: 18px;
-      flex-shrink: 0;
       flex: none;
     }
 
@@ -207,73 +103,22 @@
       background: #fff;
     }
 
-    /* ── Preview ── */
-    .preview-wrap {
-      background: #000;
-      border-radius: 8px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      border: 1px solid #2a2a2a;
-    }
-
-    #preview-text {
-      padding: 2px 8px;
-      border-radius: 2px;
-      line-height: 1.4;
-      transition: all 0.15s;
-    }
-
-    /* ── Save button ── */
-    .save-btn {
+    .settings-btn {
+      display: block;
       width: 100%;
-      padding: 9px;
-      background: #ff3333;
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-      transition: background 0.15s;
-    }
-
-    .save-btn:hover { background: #e02020; }
-    .save-btn:active { background: #c01a1a; }
-
-    .io-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .io-btn {
-      flex: 1;
-      padding: 7px;
+      padding: 8px;
       background: #2a2a2a;
-      color: #aaa;
+      color: #ccc;
       border: 1px solid #383838;
       border-radius: 7px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 500;
+      text-align: center;
       transition: background 0.15s, color 0.15s;
     }
 
-    .io-btn:hover { background: #333; color: #ddd; }
-
-    .status {
-      text-align: center;
-      font-size: 11px;
-      color: transparent;
-      margin-top: 7px;
-      height: 13px;
-    }
-
-    .status.saved { color: #44cc66; }
+    .settings-btn:hover { background: #333; color: #fff; }
   </style>
 </head>
 <body>
@@ -281,129 +126,19 @@
   <div class="header">
     <div class="header-title">
       <div class="logo"></div>
-      <h1>YouTube Subtitle Styler</h1>
-    </div>
-    <div class="header-toggle">
-      <span>Enable</span>
-      <label class="switch">
-        <input type="checkbox" id="enabled" />
-        <span class="slider"></span>
-      </label>
+      <h1>Subtitle Styler</h1>
     </div>
   </div>
 
-  <div class="body">
-
-    <!-- Text settings -->
-    <div class="section">
-      <div class="section-label">Text</div>
-      <div class="card">
-
-        <div class="field">
-          <span class="field-label">Font size</span>
-          <div class="field-control">
-            <input type="range" id="fontSize" min="10" max="60" step="1" />
-            <span class="range-val"><span id="fontSizeVal">20</span>px</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Font family</span>
-          <div class="field-control">
-            <select id="fontFamily">
-              <option value="Arial">Arial</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Verdana">Verdana</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Impact">Impact</option>
-              <option value="Trebuchet MS">Trebuchet MS</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Color</span>
-          <div class="field-control swatches" id="colorSwatches"></div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Opacity</span>
-          <div class="field-control">
-            <input type="range" id="fontOpacity" min="0" max="100" step="5" />
-            <span class="range-val"><span id="fontOpacityVal">100</span>%</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Bold</span>
-          <div class="field-control">
-            <label class="switch">
-              <input type="checkbox" id="bold" />
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Italic</span>
-          <div class="field-control">
-            <label class="switch">
-              <input type="checkbox" id="italic" />
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Text shadow</span>
-          <div class="field-control">
-            <label class="switch">
-              <input type="checkbox" id="shadow" />
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Background settings -->
-    <div class="section">
-      <div class="section-label">Background</div>
-      <div class="card">
-
-        <div class="field">
-          <span class="field-label">Color</span>
-          <div class="field-control swatches" id="bgColorSwatches"></div>
-        </div>
-
-        <div class="field">
-          <span class="field-label">Opacity</span>
-          <div class="field-control">
-            <input type="range" id="bgOpacity" min="0" max="100" step="5" />
-            <span class="range-val"><span id="bgOpacityVal">75</span>%</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Preview -->
-    <div class="preview-wrap">
-      <span id="preview-text">Example subtitle text</span>
-    </div>
-
-    <button class="save-btn" id="saveBtn">Save settings</button>
-    <div class="io-row">
-      <button class="io-btn" id="exportBtn">Export settings</button>
-      <button class="io-btn" id="importBtn">Import settings</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" />
-    </div>
-    <div class="status" id="status"></div>
-
+  <div class="toggle-row">
+    <span class="toggle-label">Enable styles</span>
+    <label class="switch">
+      <input type="checkbox" id="enabled" />
+      <span class="slider"></span>
+    </label>
   </div>
+
+  <button class="settings-btn" id="openSettings">Open settings</button>
 
   <script src="popup.js"></script>
 </body>

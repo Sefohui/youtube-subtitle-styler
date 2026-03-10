@@ -6,6 +6,7 @@ A browser extension for Firefox and Chrome that lets you set your preferred subt
 
 - **Font size** — set a custom size between 10px and 60px
 - **Font family** — choose from 8 fonts
+- **Font Opacity** - control the text's transparency
 - **Text color** — all 8 colors available in YouTube's own subtitle settings
 - **Bold, italic, text shadow** — toggleable
 - **Background color & opacity** — pick a color and control transparency

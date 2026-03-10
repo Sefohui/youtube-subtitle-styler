@@ -188,6 +188,24 @@ get("importFile").addEventListener("change", (e) => {
       const merged = { ...DEFAULTS, ...imported };
       populateForm(merged);
       browser.storage.local.set({ settings: merged }).then(() => {
+        browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+          if (tabs[0]) {
+            browser.tabs.sendMessage(tabs[0].id, {
+              type: "settingsUpdated",
+              settings: merged,
+            }).catch(() => {});
+          }
+        });
+
+        browser.tabs.query({ url: "*://*.youtube.com/*" }).then((tabs) => {
+          for (const tab of tabs) {
+            browser.tabs.sendMessage(tab.id, {
+              type: "settingsUpdated",
+              settings: merged,
+            }).catch(() => {});
+          }
+        });
+
         const status = get("status");
         status.textContent = "Settings imported!";
         status.className = "status saved";

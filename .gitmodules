@@ -1,0 +1,3 @@
+[submodule "tools"]
+	path = tools
+	url = git@github.com:Sefohui/youtube-subtitle-styler-tools.git

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>YouTube Subtitle Styler — Settings</title>
+  <title>YouTube Subtitle Styler — Import / Export</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,7 +15,7 @@
     }
 
     .page {
-      max-width: 560px;
+      max-width: 480px;
       margin: 0 auto;
       padding: 36px 24px 48px;
     }
@@ -59,20 +59,7 @@
       margin-top: 2px;
     }
 
-    /* ── Section ── */
-    .section {
-      margin-bottom: 24px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
+    /* ── Card ── */
     .card {
       background: #1a1a1a;
       border: 1px solid #272727;
@@ -83,166 +70,45 @@
     .field {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
+      padding: 14px 16px;
       border-bottom: 1px solid #222;
     }
 
     .field:last-child { border-bottom: none; }
 
     .field-label {
-      color: #aaa;
       flex: 1;
+      color: #aaa;
     }
 
-    .field-control {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    input[type="range"] {
-      width: 130px;
-      accent-color: #ff3333;
-      cursor: pointer;
-    }
-
-    .range-val {
+    .field-desc {
       font-size: 12px;
-      color: #666;
-      min-width: 40px;
-      text-align: right;
-    }
-
-    select {
-      background: #252525;
-      color: #ddd;
-      border: 1px solid #333;
-      border-radius: 6px;
-      padding: 5px 10px;
-      font-size: 13px;
-      cursor: pointer;
-      outline: none;
-    }
-
-    select:focus { border-color: #ff3333; }
-
-    /* ── Color swatches ── */
-    .swatches {
-      display: flex;
-      gap: 7px;
-    }
-
-    .swatch {
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.1s, border-color 0.1s;
-      flex-shrink: 0;
-    }
-
-    .swatch:hover { transform: scale(1.15); }
-    .swatch.selected { border-color: #fff; transform: scale(1.1); }
-
-    /* ── Toggle switch ── */
-    .switch {
-      position: relative;
-      width: 36px;
-      height: 20px;
-      flex: none;
-    }
-
-    .switch input { display: none; }
-
-    .slider {
-      position: absolute;
-      inset: 0;
-      background: #383838;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .slider::before {
-      content: "";
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      left: 3px;
-      top: 3px;
-      background: #888;
-      border-radius: 50%;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    input:checked + .slider { background: #ff3333; }
-    input:checked + .slider::before {
-      transform: translateX(16px);
-      background: #fff;
-    }
-
-    /* ── Preview ── */
-    .preview-wrap {
-      background: #000;
-      border-radius: 10px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      border: 1px solid #272727;
-    }
-
-    #preview-text {
-      padding: 2px 8px;
-      border-radius: 2px;
-      line-height: 1.4;
-      transition: all 0.15s;
+      color: #555;
+      margin-top: 3px;
     }
 
     /* ── Buttons ── */
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .save-btn {
-      flex: 2;
-      padding: 10px;
-      background: #ff3333;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: background 0.15s;
-    }
-
-    .save-btn:hover { background: #e02020; }
-    .save-btn:active { background: #c01a1a; }
-
     .io-btn {
-      flex: 1;
-      padding: 10px;
+      padding: 8px 18px;
       background: #1e1e1e;
-      color: #aaa;
+      color: #ccc;
       border: 1px solid #333;
-      border-radius: 8px;
+      border-radius: 7px;
       cursor: pointer;
       font-size: 13px;
       font-weight: 500;
       transition: background 0.15s, color 0.15s;
     }
 
-    .io-btn:hover { background: #2a2a2a; color: #ddd; }
+    .io-btn:hover { background: #2a2a2a; color: #fff; }
+    .io-btn.primary { background: #ff3333; color: #fff; border-color: #ff3333; }
+    .io-btn.primary:hover { background: #e02020; border-color: #e02020; }
 
     .status {
       text-align: center;
       font-size: 12px;
       color: transparent;
+      margin-top: 16px;
       height: 16px;
     }
 
@@ -257,132 +123,31 @@
     <div class="logo"></div>
     <div>
       <h1>YouTube Subtitle Styler</h1>
-      <p>Settings</p>
+      <p>Import / Export</p>
     </div>
   </div>
 
-  <!-- Enable -->
-  <div class="section">
-    <div class="card">
-      <div class="field">
-        <span class="field-label">Enable styles</span>
-        <div class="field-control">
-          <label class="switch">
-            <input type="checkbox" id="enabled" />
-            <span class="slider"></span>
-          </label>
-        </div>
+  <div class="card">
+
+    <div class="field">
+      <div>
+        <div class="field-label">Export settings</div>
+        <div class="field-desc">Save your current settings to a JSON file</div>
       </div>
+      <button class="io-btn primary" id="exportBtn">Export</button>
     </div>
-  </div>
 
-  <!-- Text -->
-  <div class="section">
-    <div class="section-label">Text</div>
-    <div class="card">
-
-      <div class="field">
-        <span class="field-label">Font size</span>
-        <div class="field-control">
-          <input type="range" id="fontSize" min="10" max="60" step="1" />
-          <span class="range-val"><span id="fontSizeVal">20</span>px</span>
-        </div>
+    <div class="field">
+      <div>
+        <div class="field-label">Import settings</div>
+        <div class="field-desc">Load settings from a previously exported file</div>
       </div>
-
-      <div class="field">
-        <span class="field-label">Font family</span>
-        <div class="field-control">
-          <select id="fontFamily">
-            <option value="Arial">Arial</option>
-            <option value="Helvetica">Helvetica</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Impact">Impact</option>
-            <option value="Trebuchet MS">Trebuchet MS</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Color</span>
-        <div class="field-control swatches" id="colorSwatches"></div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Opacity</span>
-        <div class="field-control">
-          <input type="range" id="fontOpacity" min="0" max="100" step="5" />
-          <span class="range-val"><span id="fontOpacityVal">100</span>%</span>
-        </div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Bold</span>
-        <div class="field-control">
-          <label class="switch">
-            <input type="checkbox" id="bold" />
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Italic</span>
-        <div class="field-control">
-          <label class="switch">
-            <input type="checkbox" id="italic" />
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Text shadow</span>
-        <div class="field-control">
-          <label class="switch">
-            <input type="checkbox" id="shadow" />
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
+      <button class="io-btn" id="importBtn">Import</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" />
     </div>
+
   </div>
 
-  <!-- Background -->
-  <div class="section">
-    <div class="section-label">Background</div>
-    <div class="card">
-
-      <div class="field">
-        <span class="field-label">Color</span>
-        <div class="field-control swatches" id="bgColorSwatches"></div>
-      </div>
-
-      <div class="field">
-        <span class="field-label">Opacity</span>
-        <div class="field-control">
-          <input type="range" id="bgOpacity" min="0" max="100" step="5" />
-          <span class="range-val"><span id="bgOpacityVal">75</span>%</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Preview -->
-  <div class="preview-wrap">
-    <span id="preview-text">Example subtitle text</span>
-  </div>
-
-  <div class="btn-row">
-    <button class="save-btn" id="saveBtn">Save settings</button>
-    <button class="io-btn" id="exportBtn">Export</button>
-    <button class="io-btn" id="importBtn">Import</button>
-    <input type="file" id="importFile" accept=".json" style="display:none" />
-  </div>
   <div class="status" id="status"></div>
 
 </div>

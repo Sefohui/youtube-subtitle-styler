@@ -18,6 +18,7 @@ const DEFAULTS = {
   bold: false,
   italic: false,
   shadow: true,
+  dropShadow: false,
   enabled: true,
 };
 
@@ -37,8 +38,11 @@ function buildCSS(s) {
   const bg = hexToRgb(s.bgColor);
   const fgAlpha = s.fontOpacity / 100;
   const bgAlpha = s.bgOpacity / 100;
-  const textShadow = s.shadow
-    ? "text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000 !important;"
+  const shadows = [];
+  if (s.shadow) shadows.push("1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000");
+  if (s.dropShadow) shadows.push("3px 4px 8px rgba(0,0,0,0.9)");
+  const textShadow = shadows.length
+    ? `text-shadow: ${shadows.join(", ")} !important;`
     : "text-shadow: none !important;";
 
   return `

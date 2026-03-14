@@ -64,9 +64,13 @@ function buildSwatches(containerId, currentHex, onChange) {
 }
 
 function buildDropShadow(strength) {
-  const blur = Math.round(4 + strength * 0.16);
-  const opacity = Math.min(1, 0.4 + strength * 0.006).toFixed(2);
-  return `2px 3px ${blur}px rgba(0,0,0,${opacity})`;
+  const s = strength / 100;
+  const blur = Math.round(3 + s * 22);
+  const opacity = Math.min(1, 0.3 + s * 0.7).toFixed(2);
+  const primary = `2px 3px ${blur}px rgba(0,0,0,${opacity})`;
+  if (strength < 40) return primary;
+  const halo = `0px 0px ${Math.round(blur * 0.55)}px rgba(0,0,0,${opacity})`;
+  return `${primary}, ${halo}`;
 }
 
 function updatePreview(s) {

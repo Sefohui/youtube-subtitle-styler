@@ -43,9 +43,16 @@ function buildCSS(s) {
   if (s.shadow) shadows.push("1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000");
   if (s.dropShadow) {
     const strength = s.dropShadowStrength ?? 50;
-    const blur = Math.round(4 + strength * 0.16);
-    const opacity = Math.min(1, 0.4 + strength * 0.006).toFixed(2);
-    shadows.push(`2px 3px ${blur}px rgba(0,0,0,${opacity})`);
+    const sc = strength / 100;
+    const blur = Math.round(3 + sc * 22);
+    const opacity = Math.min(1, 0.3 + sc * 0.7).toFixed(2);
+    const primary = `2px 3px ${blur}px rgba(0,0,0,${opacity})`;
+    if (strength >= 40) {
+      const halo = `0px 0px ${Math.round(blur * 0.55)}px rgba(0,0,0,${opacity})`;
+      shadows.push(`${primary}, ${halo}`);
+    } else {
+      shadows.push(primary);
+    }
   }
   const textShadow = shadows.length
     ? `text-shadow: ${shadows.join(", ")} !important;`

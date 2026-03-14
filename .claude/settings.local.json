@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:\\\\Users\\\\kevin\\\\Dev\\\\youtube-subtitle-styler\" && python -c \"\nimport zipfile, glob\nzips = glob.glob\\('releases/*firefox*.zip'\\)\nif zips:\n    with zipfile.ZipFile\\(zips[-1]\\) as z:\n        print\\('Zip:', zips[-1]\\)\n        for e in z.namelist\\(\\):\n            print\\(' ', repr\\(e\\)\\)\nelse:\n    print\\('No firefox zip found'\\)\n\")"
+    ]
+  }
+}

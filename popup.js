@@ -17,6 +17,7 @@ const DEFAULTS = {
   italic: false,
   shadow: true,
   dropShadow: false,
+  dropShadowStrength: 50,
   enabled: true,
 };
 
@@ -62,6 +63,12 @@ function buildSwatches(containerId, currentHex, onChange) {
   }
 }
 
+function buildDropShadow(strength) {
+  const blur = Math.round(4 + strength * 0.16);
+  const opacity = Math.min(1, 0.4 + strength * 0.006).toFixed(2);
+  return `2px 3px ${blur}px rgba(0,0,0,${opacity})`;
+}
+
 function updatePreview(s) {
   const preview = get("preview-text");
   const fg = hexToRgb(s.color);
@@ -74,7 +81,7 @@ function updatePreview(s) {
   preview.style.fontStyle = s.italic ? "italic" : "normal";
   const shadows = [];
   if (s.shadow) shadows.push("1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000");
-  if (s.dropShadow) shadows.push("3px 4px 8px rgba(0,0,0,0.9)");
+  if (s.dropShadow) shadows.push(buildDropShadow(s.dropShadowStrength));
   preview.style.textShadow = shadows.length ? shadows.join(", ") : "none";
   preview.style.opacity = s.enabled ? "1" : "0.4";
 }
@@ -92,6 +99,7 @@ function readForm() {
     italic: get("italic").checked,
     shadow: get("shadow").checked,
     dropShadow: get("dropShadow").checked,
+    dropShadowStrength: parseInt(get("dropShadowStrength").value),
   };
 }
 
@@ -110,6 +118,9 @@ function populateForm(s) {
   get("italic").checked = s.italic;
   get("shadow").checked = s.shadow;
   get("dropShadow").checked = s.dropShadow;
+  get("dropShadowStrength").value = s.dropShadowStrength ?? DEFAULTS.dropShadowStrength;
+  get("dropShadowStrengthVal").textContent = s.dropShadowStrength ?? DEFAULTS.dropShadowStrength;
+  get("dropShadowStrengthRow").style.display = s.dropShadow ? "" : "none";
   buildSwatches("colorSwatches", s.color, (hex) => { selectedColor = hex; });
   buildSwatches("bgColorSwatches", s.bgColor, (hex) => { selectedBgColor = hex; });
   updatePreview(s);
@@ -120,6 +131,8 @@ function onInput() {
   get("fontSizeVal").textContent = s.fontSize;
   get("fontOpacityVal").textContent = s.fontOpacity;
   get("bgOpacityVal").textContent = s.bgOpacity;
+  get("dropShadowStrengthVal").textContent = s.dropShadowStrength;
+  get("dropShadowStrengthRow").style.display = s.dropShadow ? "" : "none";
   updatePreview(s);
 }
 
@@ -144,7 +157,7 @@ function broadcastSettings(settings) {
   });
 }
 
-["fontSize", "fontOpacity", "bgOpacity"].forEach(id => get(id).addEventListener("input", onInput));
+["fontSize", "fontOpacity", "bgOpacity", "dropShadowStrength"].forEach(id => get(id).addEventListener("input", onInput));
 ["fontFamily"].forEach(id => get(id).addEventListener("change", onInput));
 ["enabled", "bold", "italic", "shadow", "dropShadow"].forEach(id => get(id).addEventListener("change", onInput));
 

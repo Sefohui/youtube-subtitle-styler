@@ -17,6 +17,7 @@ const DEFAULTS = {
   italic: false,
   shadow: true,
   dropShadow: false,
+  dropShadowStrength: 50,
   enabled: true,
 };
 

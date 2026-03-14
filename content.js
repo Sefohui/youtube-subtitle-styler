@@ -19,6 +19,7 @@ const DEFAULTS = {
   italic: false,
   shadow: true,
   dropShadow: false,
+  dropShadowStrength: 50,
   enabled: true,
 };
 
@@ -40,7 +41,12 @@ function buildCSS(s) {
   const bgAlpha = s.bgOpacity / 100;
   const shadows = [];
   if (s.shadow) shadows.push("1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000");
-  if (s.dropShadow) shadows.push("3px 4px 8px rgba(0,0,0,0.9)");
+  if (s.dropShadow) {
+    const strength = s.dropShadowStrength ?? 50;
+    const blur = Math.round(4 + strength * 0.16);
+    const opacity = Math.min(1, 0.4 + strength * 0.006).toFixed(2);
+    shadows.push(`2px 3px ${blur}px rgba(0,0,0,${opacity})`);
+  }
   const textShadow = shadows.length
     ? `text-shadow: ${shadows.join(", ")} !important;`
     : "text-shadow: none !important;";
